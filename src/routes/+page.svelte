@@ -1,5 +1,25 @@
 <!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
-
+<script>
+	
+	import { AppBar } from '@skeletonlabs/skeleton';
+	
+</script>
+<AppBar background="bg-transparent">
+	<svelte:fragment slot="lead">
+		<a href="/">
+		<h1>
+			<span class="text-3xl bg-gradient-to-br from-green-300 to-blue-600 bg-clip-text text-transparent box-decoration-clone">News</span>
+		</h1>
+		</a>
+	</svelte:fragment>
+	<svelte:fragment slot="trail">
+		<a href="news"><h1>News</h1></a>
+		<a href="#features"><h1>Features</h1></a>
+		<a href="#contact"><h1>Contact</h1></a>
+	</svelte:fragment>
+	
+</AppBar>
+<div class="m-[8%]">
 <div class="m-auto container mx-auto flex flex-col justify-center items-center space-y-12">
 	<div class="flex flex-col container text-center justify-center items-center space-y-8 ">
 		<h1 class="text-6xl leading-normal">Introducing the latest <span class="underline decoration-sky-500">innovation</span> <br> in <span class="underline decoration-pink-500">News Briefing</span></h1>
@@ -56,4 +76,5 @@
 	</div>
 	<span class="relative invisible -bottom-[100vh]">:D</span>
 	
+</div>
 </div>
