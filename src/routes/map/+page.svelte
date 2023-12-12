@@ -35,7 +35,7 @@
     onMount( async () => {
         locations = await fetch(`/api/location`).then((res) => res.json());
         if (await locations) {
-            console.log(JSON.parse(locations).articles[0].locations[0].candidates[0].output)
+            console.log(locations)
             loading = false;
         }
     })
