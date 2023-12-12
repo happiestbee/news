@@ -68,8 +68,10 @@ export const GET: RequestHandler = async ( {params, url}) => {
         },
     ]
     let query = await fetch(`https://newsapi.org/v2/top-headlines?apiKey=${news_key}&language=en`).then((res) =>res.json()).then(async (res) => {
+        let removes : number[] = []
         for (let i = 0; i < res.articles.length; i++) {
             let article = res.articles[i];
+            
             article.locations = await client.generateText({
                 // required, which model to use to generate the result
             model: MODEL_NAME,
@@ -85,12 +87,21 @@ export const GET: RequestHandler = async ( {params, url}) => {
             },
             })
             if (article.locations[0].candidates.length  == 0) {
-                res.articles.splice(i, 1);
+                removes.push(i)
             }
             else if (article.locations[0].candidates[0].output.split(": ")[4] in ["None", "0"]) {
-                res.articles.splice(i, 1);
+                removes.push(i)
+            }
+            
+            else if (!article.hasOwnProperty("locations")) {
+                removes.push(i)
             }
         }
+        removes.sort((a,b) => b-a)
+        for (let i = 0; i < removes.length; i++) {
+            res.articles.splice(removes[i], 1);
+         }
+        
         return res
     }).then((res) => {return JSON.stringify(res, null, 2)})
 
