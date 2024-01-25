@@ -25,6 +25,7 @@ export const GET: RequestHandler = async ( {params, url}) => {
 
     const text = `You will be given a information about a new story that comes in the following format: "Title: title of the news story, Description: a brief description of the news story, Content: the beginning of the news story, truncated at 200 characters" Your job is to identify the most likely location that the news story is concerning, such as the country, state, or city. Try to be as specific as possible. Then, provide the approximate latitude and longitude coordinates of the location identified. Output the results in the following format: "Location: the location identified, Latitude: the latitude coordinate of the location, Longitude: the longitude coordinate of the location"`
     
+    // example prompts and responses 
     const examples = [
         {
             input: {
@@ -68,6 +69,7 @@ export const GET: RequestHandler = async ( {params, url}) => {
         },
     ]
     let query = await fetch(`https://newsapi.org/v2/top-headlines?apiKey=${news_key}&language=en`).then((res) =>res.json()).then(async (res) => {
+        // array of indices of articles that have to be removed 
         let removes : number[] = []
         for (let i = 0; i < res.articles.length; i++) {
             let article = res.articles[i];
@@ -86,18 +88,23 @@ export const GET: RequestHandler = async ( {params, url}) => {
                 text: `${text}\nComplete this task for the following news story:\nTitle: ${article.title}, Description: ${article.description}, Content: ${article.content}`,
             },
             })
+            // if a safety error was encountered, candidates will be empty
             if (article.locations[0].candidates.length  == 0) {
                 removes.push(i)
             }
+            // if the longitude value is None or 0 
             else if (article.locations[0].candidates[0].output.split(": ")[4] in ["None", "0"]) {
                 removes.push(i)
             }
-            
+            // if for some reason the locations key is never given to the article?
             else if (!article.hasOwnProperty("locations")) {
                 removes.push(i)
             }
         }
+        // sort to be removed indices in descending order 
         removes.sort((a,b) => b-a)
+
+        // remove each article as indicated by the values in removes array 
         for (let i = 0; i < removes.length; i++) {
             res.articles.splice(removes[i], 1);
          }

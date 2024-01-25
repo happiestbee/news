@@ -2,11 +2,11 @@
     import type { PageData } from './$types';
     import { onMount } from 'svelte';
 
-    let locations: any;
+    let articles: any;
     let loading = true;
 
     onMount(async () => {
-		let params = new URLSearchParams();
+		// let params = new URLSearchParams();
 		// params.append('text', 'Multiple tornado warnings were issued for parts of New York on Sunday night.The first warning, which expired at 9 p.m., covered the Bronx, Yonkers and New Rochelle. More than 2 million people live in the impacted area');
 
 		// locations = await fetch(`/api/location?` + params.toString()).then((res) => res.text());
@@ -18,10 +18,8 @@
         });		
         */
 
-        locations = await fetch(`/api/location`).then((res) => res.json());
-        if (await locations) {
-            console.log(locations)
-            console.log((JSON.parse(locations).articles[0]).locations[0].candidates)
+        articles = await fetch(`/api/stories`).then((res) => res.json());
+        if (await articles) {
             loading = false;
         }
 	});
@@ -31,7 +29,7 @@
 <div class="container m-auto my-[5%] flex flex-col space-y-10">
 {#if !(loading)}
 
-    {#each JSON.parse(locations).articles as article }
+    {#each articles as article }
     <div class="card">
     <header>
         <img src={article.urlToImage} class="bg-black/50 w-full" alt={article.title} />
@@ -44,7 +42,7 @@
                <br><br>
                <b>Preview: </b>{article.content}
                <br><br>
-               <b>Locations: </b>{article.locations[0].candidates[0].output}
+               <b>Locations: </b>{article.location}
             </p>
         </article>
     </div>

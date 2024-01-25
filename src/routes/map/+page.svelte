@@ -6,8 +6,9 @@
     
     // export let data: PageData;
     let loading = true;
-    let locations: any;
-    let testPrompt = "Location: Baltimore, Maryland, United States, Latitude: 39.307503, Longitude: -76.606455";
+    let stories: any;
+    // let locations: any;
+    // let testPrompt = "Location: Baltimore, Maryland, United States, Latitude: 39.307503, Longitude: -76.606455";
 
     const location_parse = (output : string) => {
         if (output == '') {
@@ -31,11 +32,20 @@
 
         return obj
     }
-
+    /*
     onMount( async () => {
         locations = await fetch(`/api/location`).then((res) => res.json());
         if (await locations) {
             console.log(locations)
+            loading = false;
+        }
+    })
+    */
+
+    onMount ( async () => {
+        stories = await fetch('/api/stories').then((res) => res.json());
+        if (await stories) {
+            console.log(stories)
             loading = false;
         }
     })
@@ -51,9 +61,9 @@
     standardControls
     style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json">
         {#if !(loading)}
-            {#each JSON.parse(locations).articles as article }
+            {#each stories as article }
                     <Marker
-                        lngLat={location_parse(article.locations[0].candidates[0].output)}
+                        lngLat={location_parse(article.location)}
                         on:click={() => {
                             window.open(article.url)
                         }}

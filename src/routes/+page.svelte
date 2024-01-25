@@ -2,6 +2,28 @@
 <script>
 	
 	import { AppBar } from '@skeletonlabs/skeleton';
+	import { onMount } from 'svelte';
+	/*
+	onMount(() => {
+		setInterval(() => {
+			fetch('/api/test');
+		}, 1000);
+	});
+	
+
+	async function getStories() {
+		let test = await fetch('/api/test')	
+	}
+	
+	onMount( async () => {
+		console.log("main")
+		setInterval(await getStories, 600000)
+	});
+	*/
+
+	onMount(() => {
+		fetch('/api/test/')
+	});
 	
 </script>
 <AppBar background="bg-transparent">

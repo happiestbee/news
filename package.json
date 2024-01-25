@@ -33,6 +33,7 @@
     "@google-ai/generativelanguage": "^1.1.0",
     "dotenv": "^16.3.1",
     "google-auth-library": "^9.4.1",
+    "pocketbase": "^0.20.3",
     "svelte-maplibre": "^0.7.3"
   }
 }
